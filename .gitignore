@@ -1,0 +1,5 @@
+# Ignore All SQLite Databases
+*.db
+
+#Ignore .env File
+.env
