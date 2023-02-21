@@ -3,6 +3,9 @@ import sqlite3
 import os
 from flask import Flask, url_for, redirect, request, render_template, make_response
 from dotenv import load_dotenv
+from utils.database import DBConnection
+
+database = DBConnection("..\databases\client.db")
 
 load_dotenv()
 
