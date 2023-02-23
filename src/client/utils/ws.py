@@ -47,7 +47,5 @@ def remove_device():
 def change_password():
     return
 
-
-
 def run():
     app.run(host="0.0.0.0", port=os.getenv("WEBSERVER_PORT"))

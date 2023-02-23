@@ -3,6 +3,9 @@ from utils.ws import run
 from dotenv import load_dotenv
 from multiprocessing import Process
 from time import sleep as wait
+from utils.msg import MSGHandler
+
+logger = MSGHandler()
 
 load_dotenv()
 
@@ -16,3 +19,4 @@ def runner():
 
 if __name__ == "__main__":
     runner()
+    logger.success("Webserver successfully started.")

@@ -3,8 +3,13 @@ import sys
 from colorama import Fore, Back
 
 commands = {
-    "rc:create:user": {
-        "callback": "create_user()"
+    "rc:user:create": {
+        "callback": "create_user()",
+        "description": "Creates a New User."
+    },
+    "rc:user:delete": {
+        "callback": "delete_user()",
+        "description": "Deletes a user."
     }
 }
 
@@ -29,17 +34,39 @@ def prompt(msg, default: str = None) -> str:
             exit()
         else: 
             result = default
+    
     return result
 
 def create_user():
-    print(prompt("First Name"))
+    first_name = prompt("First Name", "Default")
+    print("\n")
+    last_name = prompt("Last Name", "User")
+    print("\n")
+    username = prompt("Username")
+    print("\n")
+    password = prompt("Password")
+    print("\n")
+    admin = prompt("Administrator", "N")
     exit()
 
 def parse():
     args = sys.argv[1:]
-    try:
-        eval(commands[args[0]]["callback"])
-    except:
-        error("Command not found.")
+    if len(args) == 0:
+        categories = []
+        for i in commands:
+            name = i.split(":")[0]
+            if name not in categories:
+                categories.append(name)
+        for i in categories:
+            print(Fore.GREEN+i)
+            for j in commands:
+                if j.startswith(i):
+                    print(Fore.YELLOW + "   " + j + " - " + commands[j]["description"] + Fore.RESET)
+
+    else:
+        try:
+            eval(commands[args[0]]["callback"])
+        except:
+            error("Command not found.")
 
 parse()
