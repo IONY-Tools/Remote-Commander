@@ -1,0 +1,1 @@
+CREATE TABLE users (uuid text PRIMARY KEY,username text UNIQUE,firstname text,lastname text,id number UNIQUE,password text,admin boolean);

@@ -1,6 +1,11 @@
 import colorama
 import sys
+import os
+import sqlite3
 from colorama import Fore, Back
+from utils.database import DBConnection
+
+database = sqlite3.connect("databases\Remote-Commander.db")
 
 commands = {
     "rc:user:create": {
@@ -10,6 +15,10 @@ commands = {
     "rc:user:delete": {
         "callback": "delete_user()",
         "description": "Deletes a user."
+    },
+    "db:migrate": {
+        "callback": "migrate_db()",
+        "description": "Drops all tables and recreates them."
     }
 }
 
@@ -66,7 +75,18 @@ def parse():
     else:
         try:
             eval(commands[args[0]]["callback"])
-        except:
+        except Exception as e:
+            print(e)
             error("Command not found.")
 
+def migrate_db():
+    sql = "select 'drop table ' || name || ';' from sqlite_master where type = 'table';"
+    database.cursor().execute(sql)
+    database.commit()
+    for file in os.listdir("./migrations"):
+        if file.endswith("database-migration"):
+            database.cursor().execute(open("./migrations/"+file, "r").read())
+            database.commit()
+            info("Migrated " + file)
+    info("Successfully migrated the DB.")
 parse()
