@@ -1,0 +1,12 @@
+stat value {
+    white-space: pre;
+    color: lightcoral;
+}
+
+stat name {
+    font-weight: bold;
+}
+
+statistics {
+    background-color: var(--devices-color);
+}

@@ -1,5 +1,8 @@
 # Ignore All SQLite Databases
 *.db
 
-#Ignore .env File
+# Ignore .env File
 .env
+
+# Ignore All Screenshots
+*.png

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Remote-Commander - Panel</title>
+        <link rel="stylesheet" href="/public/css/sideNav.css">
+        <link rel="stylesheet" href="/public/css/global.css">
+        
+    </head>
+    <body>
+        <div class="sideNav">
+            <ul class="ul-a">
+                <li class="li-a"><a href="/panel" data-bs-toggle="tooltip" data-bs-placement="left" title="Panel"><i class="fa-solid fa-house"></i></a></li>
+                <li class="li-a"><a href="/devices" data-bs-toggle="tooltip" data-bs-placement="left" title="Devices"><i class="fa-solid fa-computer"></i></a></li>
+                <li class="li-a"><a data-bs-toggle="tooltip" data-bs-placement="left" title="Commands"><i class="fa-solid fa-terminal"></i></a></li>
+                <li class="li-a"><a data-bs-toggle="tooltip" data-bs-placement="left" title="Users"><i class="fa-solid fa-user"></i></a></li>
+            </ul>
+            <ul class="bottom_icon ul-a">
+                <li class="li-a"><a data-bs-toggle="tooltip" data-bs-placement="left" title="Settings"><i class="fa-solid fa-gear"></i></a></li>
+                <li class="li-a"><a data-bs-toggle="tooltip" data-bs-placement="left" title="User"><img src="{{profile_pic}}" width="22.5px" height="22.5px"></a></li>
+                <li class="li-a"><a data-bs-toggle="tooltip" data-bs-placement="left" title="Expand"><i class="fa-solid fa-angles-right"></i></a></li>
+            </ul>
+        </div>
+        <ul class="devices-list">
+            {% for device in devices %}
+            <li class="devices-element">
+                <a href="/device/{{device[0]}}">{{device[1]}} ({{device[3]}}) <i class="fa-solid fa-circle-{{device[5]}}"></i></a>
+            </li>
+            {% endfor %}
+        </ul>
+        <script src="/public/js/fontawesome.js"></script>
+    </body>
+</html>

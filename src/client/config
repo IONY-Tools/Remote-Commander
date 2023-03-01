@@ -2,6 +2,9 @@ import colorama
 import sys
 import os
 import sqlite3
+import string as letters
+import random
+import base64
 from colorama import Fore, Back
 from utils.database import DBConnection
 
@@ -16,11 +19,41 @@ commands = {
         "callback": "delete_user()",
         "description": "Deletes a user."
     },
+    "rc:device:create": {
+        "callback": "create_device()",
+        "description": "Creates a New Device."
+    },
     "db:migrate": {
         "callback": "migrate_db()",
         "description": "Drops all tables and recreates them."
     }
 }
+
+def gen_session(username):
+    chars = letters.ascii_lowercase+letters.ascii_uppercase+letters.digits
+    part1 = base64.b64encode(username.encode("utf-8"))
+    string = ""
+    for i in range(50):
+        string += random.choice(chars)
+    part2 = base64.b64encode(string.encode("utf-8"))
+    string = ""
+    for i in range(25):
+        string += random.choice(chars)
+    part3 = base64.b64encode(string.encode("utf-8"))
+    return (part1.decode("utf-8") + "." + part2.decode("utf-8") + "." + part3.decode("utf-8")).replace("=", "")
+
+def gen_uuid():
+    uuid = ""
+    chars = letters.ascii_lowercase+letters.ascii_uppercase+letters.digits
+    for i in range(8):
+        uuid += random.choice(chars)
+    uuid += "-"
+    for i in range(24):
+        uuid += random.choice(chars)
+    uuid += "-"
+    for i in range(12):
+        uuid += random.choice(chars)
+    return uuid
 
 def info(msg):
     print(Back.CYAN+Fore.WHITE+" INFO "+Fore.RESET+Back.RESET+" "+msg) 
@@ -40,7 +73,7 @@ def prompt(msg, default: str = None) -> str:
     if result == "":
         if default == None:
             error("Fail!")
-            exit()
+            return
         else: 
             result = default
     
@@ -55,8 +88,17 @@ def create_user():
     print("\n")
     password = prompt("Password")
     print("\n")
+    email = prompt("Email", "email@example.com")
+    print("\n")
     admin = prompt("Administrator", "N")
-    exit()
+    id = random.randint(1,999999)
+    if admin == "Y":
+        admin = True
+    else:
+        admin = False
+    database.cursor().execute(f"INSERT INTO users VALUES ('{gen_uuid()}', '{username}', '{email}', '{first_name}', '{last_name}', '{id}', '{password}', '{admin}', '{gen_session(username)}')")
+    database.commit()
+    info("Successfully created a new user.")
 
 def parse():
     args = sys.argv[1:]
@@ -71,6 +113,7 @@ def parse():
             for j in commands:
                 if j.startswith(i):
                     print(Fore.YELLOW + "   " + j + " - " + commands[j]["description"] + Fore.RESET)
+            print("\n")
 
     else:
         try:
@@ -80,13 +123,28 @@ def parse():
             error("Command not found.")
 
 def migrate_db():
-    sql = "select 'drop table ' || name || ';' from sqlite_master where type = 'table';"
+    sql = "select 'drop table ' || name || ';' from sqlite_master where type = 'table'"
     database.cursor().execute(sql)
     database.commit()
     for file in os.listdir("./migrations"):
         if file.endswith("database-migration"):
-            database.cursor().execute(open("./migrations/"+file, "r").read())
-            database.commit()
-            info("Migrated " + file)
+            try:
+                database.cursor().execute(open("./migrations/"+file, "r").read())
+                database.commit()
+                info("Migrated " + file)
+            except:
+                warning("Migration " + file + " already exists.")
     info("Successfully migrated the DB.")
+
+def create_device():
+    ip = prompt("IP Address")
+    print("\n")
+    port = int(prompt("Port", 5678))
+    print("\n")
+    nickname = prompt("Nickname", ip)
+    print("\n")
+    secret = prompt("Secret")
+    database.cursor().execute(f"INSERT INTO devices VALUES ('{gen_uuid()}', '{ip}', '{port}', '{nickname}', '{secret}')")
+    database.commit()
+    info("Created a New Device.")
 parse()

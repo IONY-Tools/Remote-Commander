@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Remote-Commander - Panel</title>
+        <link rel="stylesheet" href="/public/css/sideNav.css">
+        <link rel="stylesheet" href="/public/css/global.css">
+        
+    </head>
+    <body>
+        <div class="sideNav">
+            <ul class="ul-a">
+                <li class="li-a"><a href="/panel" data-bs-toggle="tooltip" data-bs-placement="left" title="Panel"><i class="fa-solid fa-house"></i></a></li>
+                <li class="li-a"><a href="/devices" data-bs-toggle="tooltip" data-bs-placement="left" title="Devices"><i class="fa-solid fa-computer"></i></a></li>
+                <li class="li-a"><a data-bs-toggle="tooltip" data-bs-placement="left" title="Commands"><i class="fa-solid fa-terminal"></i></a></li>
+                <li class="li-a"><a data-bs-toggle="tooltip" data-bs-placement="left" title="Users"><i class="fa-solid fa-user"></i></a></li>
+            </ul>
+            <ul class="bottom_icon ul-a">
+                <li class="li-a"><a data-bs-toggle="tooltip" data-bs-placement="left" title="Settings"><i class="fa-solid fa-gear"></i></a></li>
+                <li class="li-a"><a data-bs-toggle="tooltip" data-bs-placement="left" title="User"><img src="{{profile_pic}}" width="22.5px" height="22.5px"></a></li>
+                <li class="li-a"><a data-bs-toggle="tooltip" data-bs-placement="left" title="Expand"><i class="fa-solid fa-angles-right"></i></a></li>
+            </ul>
+        </div>
+        <div class="device-container">
+            <img src="{{url}}" width="300px" height="185px">
+            <h1>{{device["nickname"]}} ({{device["ip"]}}:{{device["port"]}})</h1>
+            <input type="text" id="cmd" placeholder="Command">
+            <button onclick="send_command(`{{ device['secret'] }}`, `{{ device['ip'] }}`, `{{ device['port'] }}`)">Run</button></br><br>
+            <textarea placeholder="Output..." readonly id="output"></textarea>
+            <div class="info">
+                <h2>Information</h2>
+                <p>Nickname: {{device["nickname"]}}</p>
+                <p>IP: {{device["ip"]}}</p>
+                <p>Port: {{device["port"]}}</p>
+                <p>UUID: {{device["uuid"]}}</p>
+                <p>Public IP: {{device["public_ip"]}}</p>
+            </div>
+        </div>
+        <script src="/public/js/fontawesome.js"></script>
+        <script src="/public/js/send_command.js"></script>
+    </body>
+</html>

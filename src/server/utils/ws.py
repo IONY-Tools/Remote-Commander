@@ -4,25 +4,22 @@ import subprocess
 import pyautogui
 import logging
 import sys
+import requests
 from flask import render_template, url_for, request, send_file
 from dotenv import load_dotenv
 from io import StringIO
 from contextlib import redirect_stdout
 from utils.random import Random
-
-sys.path.append("src\server\screenshots")
-
-print(os.getcwd())
-
+from flask_cors import CORS
 
 load_dotenv()
 
 random = Random()
 
-app = flask.Flask(__name__)
+app = flask.Flask(__name__, static_folder=os.getenv("SCREENSHOT_DIR"), static_url_path="/public")
 
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-
+CORS(app)
 logger = logging.getLogger("werkzeug")
 logger.disabled = True
 
@@ -56,9 +53,24 @@ def screenshot():
         file_name = random.random_string(16)
         Screenshot = pyautogui.screenshot()
         Screenshot.save(rf'{os.getenv("SCREENSHOT_DIR")}{file_name}.png')
-        return send_file(rf'{os.getenv("SCREENSHOT_DIR")}{file_name}.png')
+        return f'{file_name}.png'
     else:
         return "Invalid Secret Passed"
 
+@app.get("/ping")
+def exec_ping():
+    SECRET = request.form["secret"]
+    if SECRET == os.getenv("APPLICATION_SECRET"):
+        return "OK"
+    else:
+        return "FAIL"
+    
+@app.get("/public_ip")
+def public_ip():
+    SECRET = request.form["secret"]
+    if SECRET == os.getenv("APPLICATION_SECRET"):
+        return requests.get("http://httpbin.org/anything").json()["origin"]
+    else:
+        return "FAIL"
 def run():
     app.run(host="0.0.0.0", port=os.getenv("WEBSERVER_PORT"))

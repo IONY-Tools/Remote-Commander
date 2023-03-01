@@ -1,0 +1,75 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+:root {
+    --bg-color: #7dfb9d;
+    --font-family: Roboto;
+    --devices-color: #6e6e6e;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: var(--font-family);
+    overflow-y: hidden;
+}
+
+.fa-circle-down {
+    color: red;
+}
+
+.fa-circle-up {
+    color: greenyellow;
+}
+
+.devices-list {
+    position: absolute;
+    left: 5%;
+    list-style: none;
+    color: white;
+}
+
+.devices-element {
+    background-color: var(--devices-color);
+    margin: 10px;
+    border-radius: 10px;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    padding-left: 20%;
+    padding-right: 200%;
+}
+
+.devices-element a {
+    display: block;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.device-container {
+    position: absolute;
+    left: 5%;
+    resize: both;
+}
+
+textarea {
+    height: 410px; 
+    width: 620px;
+    resize: none;
+}
+
+.info {
+    background-color: var(--devices-color);
+    position: fixed;
+    top: 5%;
+    right: 5%;
+    border-radius: 10px;
+    color: white;
+    padding: 5px;
+}
+
+textcontainer {
+    position: absolute;
+    left: 5%;
+}

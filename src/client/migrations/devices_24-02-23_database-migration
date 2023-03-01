@@ -1,0 +1,1 @@
+CREATE TABLE devices (uuid PRIMARY KEY, ip_address TEXT NOT NULL UNIQUE, port NUMBER NOT NULL, nickname TEXT, secret TEXT NOT NULL);
