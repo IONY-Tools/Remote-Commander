@@ -2,4 +2,4 @@ flask
 requests
 pyautogui
 pillow
-dotenv
+python-dotenv
