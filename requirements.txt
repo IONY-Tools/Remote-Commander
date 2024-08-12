@@ -5,3 +5,4 @@ pillow
 python-dotenv
 flask_cors
 libgravatar
+pyscreeze
