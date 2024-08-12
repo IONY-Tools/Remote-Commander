@@ -1,7 +1,7 @@
 import flask
 import os
 import subprocess
-import pyautogui
+import pyscreeze
 import logging
 import sys
 import requests
@@ -51,7 +51,7 @@ def screenshot():
     SECRET = request.form["secret"]
     if SECRET == os.getenv("APPLICATION_SECRET"):
         file_name = random.random_string(16)
-        Screenshot = pyautogui.screenshot()
+        Screenshot = pyscreeze.screenshot()
         Screenshot.save(rf'{os.getenv("SCREENSHOT_DIR")}{file_name}.png')
         return f'{file_name}.png'
     else:
